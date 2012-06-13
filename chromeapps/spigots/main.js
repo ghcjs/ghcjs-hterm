@@ -145,7 +145,7 @@ main.interpretCertFromX509Pem = function(x509Pem) {
 
 $(document).ready(function() {
   ui.translateText();
-  $('div.selectable').click(function() {
+  $('button.dialog').add('div.add-row').click(function() {
     var id = $(this)[0].id;
     var lastDash = id.lastIndexOf('-');
     if (lastDash != -1) {

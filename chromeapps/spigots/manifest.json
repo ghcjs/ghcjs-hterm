@@ -4,6 +4,9 @@
       "local_path": "main.html"
     }
   },
+  "icons": {
+    "128": "images/icon128.png"
+  },
   "default_locale": "en",
   "description": "__MSG_extDesc__",
   "name": "__MSG_extName__",

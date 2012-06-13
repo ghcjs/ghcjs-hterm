@@ -190,7 +190,7 @@ ui.updateCertificateDropdown = function(optionList, clearFirst) {
     var oncCert = main.oncCurrent.Certificates[i];
     if (oncCert.Type != 'Authority')
       continue;
-    var certDescription = ui.formatCertificate(oncCert, 1);
+    var certDescription = ui.formatCertificateName(oncCert);
     optionList.options.add(new Option(certDescription, oncCert.GUID));
   }
   if (optionList.options.length == 0) {
@@ -206,131 +206,116 @@ ui.updateCertificateDropdown = function(optionList, clearFirst) {
  * @param {DOM} entityDom  DOM of entity in the list.
  */
 ui.setEntityStatus = function(oncEntity, result, entityDom) {
-  var whichMark = null;
-  if (result.errors.length)
-    whichMark = '#error-mark';
-  else if (result.warnings.length)
-    whichMark = '#warning-mark';
-  if (whichMark) {
-    $(whichMark, entityDom).show();
-    // if you click on the warning/error, edit the entry.
-    $(whichMark, entityDom).click(function(event) {
-      $('#edit', this.parentNode).click();
-    });
+  var info = $('.item-info', entityDom)[0];
+  if (onc.isMarkedForRemoval(oncEntity)) {
+    info.textContent = '[Marked for removal]';
+  } else if (result.errors.length) {
+    info.classList.add('error');
+    info.textContent = '[Errors]';
+  } else if (result.warnings.length) {
+    info.textContent = '[Warnings]';
   }
-  if (onc.isMarkedForRemoval(oncEntity))
-    $('#mark-removal-mark', entityDom).show();
 };
 
 /**
- * Format a network configuration for display.
+ * Returns an event handler for edit press on an entity in the summary list.
+ */
+ui.getOnEntityEditPress = function(type) {
+  return function() {
+    var index = $(this).data('index');
+    ui.onEditPress(type, index);
+  };
+};
+
+/**
+ * Format a network configuration name for display.
  * @param {Object} oncNetwork  ONC network configuration
  */
-ui.formatNetwork = function(oncNetwork, maxLines) {
+ui.formatNetworkName = function(oncNetwork) {
   var bestName = chrome.i18n.getMessage('unknownName');
   if ('Name' in oncNetwork)
     bestName = oncNetwork.Name;
   else if ('GUID' in oncNetwork)
     bestName = oncNetwork.GUID;
-  if (maxLines == 1) {
-    return bestName;
-  } else {
-    var bestType = chrome.i18n.getMessage('unknownType');
-    if ('Type' in oncNetwork)
-      bestType = oncNetwork.Type;
-    return bestName + '<br>' + bestType;
-  }
+  return bestName;
 };
 
 /**
- * Handle edit press on a network in the summary list.
- */
-ui.onNetworkEditPress = function() {
-  var parent = $(this).parent();
-  var index = parent.data('index')
-  if (parent.data('onc').Type == 'WiFi')
-    ui.onEditPress('wifi', index);
-  else
-    ui.onEditPress('vpn', index);
-};
-
-/**
- * Format a network configuration for display.
+ * Format a network configuration description for display.
  * @param {Object} oncNetwork  ONC network configuration
- * @param {Integer} maxLines Maximum lines available for description.
-                    Defaults to no maximum.
  */
-ui.formatCertificate = function(oncCert, maxLines) {
-  var cert = null;
-  var bestName = [ chrome.i18n.getMessage('unknownName'), '' ];
+ui.formatNetworkDescription = function(oncCert) {
+  return '';
+};
+
+/**
+ * Format a certificate description for display.
+ * @param {Object} oncNetwork  ONC certificate
+ */
+ui.formatCertificateDescription = function(oncCert) {
+  return '';
+};
+
+/**
+ * Format a certificate name for display.
+ * @param {Object} oncNetwork  ONC certificate
+ */
+ui.formatCertificateName = function(oncCert) {
+  var bestName = chrome.i18n.getMessage('unknownName');
   if ('GUID' in oncCert) {
-    bestName[0] = oncCert['GUID'];
+    bestName = oncCert['GUID'];
   }
   if ('X509' in oncCert) {
-    cert = main.interpretCertFromX509Pem(oncCert.X509);
+    var cert = main.interpretCertFromX509Pem(oncCert.X509);
+    if ('commonName' in cert.subject) {
+      bestName = cert.subject.commonName;
+    }
   }
-  if (cert && 'commonName' in cert.subject) {
-    bestName[0] = cert.subject.commonName;
-  }
-  if (cert && 'commonName' in cert.issuer) {
-    bestName[1] = cert.subject.commonName;
-  }
-
-  if (maxLines == 1)
-    return bestName[0];
-  return bestName[0] + '<br>\n [' + bestName[1] + ']';
-};
-
-/**
- * Handle edit press on a network in the summary list.
- */
-ui.onCertificateEditPress = function() {
-  var parent = $(this).parent();
-  var index = parent.data('index')
-  ui.onEditPress('cert', index);
+  return bestName;
 };
 
 /**
  * Show the summary of the current ONC settings for a given kind of entity.
  * @param {Array.<Object>} list  List of entities (networks or certificates)
+ * @param {String} type Entity type.
  * @param {String} id  query id of the list's top level DOM.
  * @param {Function} validator  Called to validate this entity.
- * @param {Function} formatter  Called to format entity to HTML.
+ * @param {Function} nameFormatter  Called to format name entity.
  * @param {Function} editCallback  Called to handle edit press of this entity.
  */
-ui.showSummaryList = function(list, id, validator, formatter, editCallback) {
+ui.showSummaryList = function(list, type, id, validator, nameFormatter,
+                              descFormatter, editCallback) {
   for (var i = 0; i < list.length; ++i) {
     var oncEntity = list[i];
+    if (type != null && type != oncEntity.Type)
+      continue;
     var result = validator(i, main.oncCurrent);
-    var newDom = $('#template', id).clone();
-    newDom[0].id = '';
-    $(id).append(newDom);
-    $('#left', newDom).html(formatter(oncEntity));
+    var newDom = $('.template', id).clone();
+    newDom[0].classList.remove('template');
+
+    newDom.insertBefore($('.add-row', id));
+    $('.item-description', newDom)[0].textContent = descFormatter(oncEntity);
+    $('.item-title', newDom)[0].textContent = nameFormatter(oncEntity);
+    newDom.data('onc', oncEntity);
+    newDom.data('index', i);
+
     ui.setEntityStatus(oncEntity, result, newDom);
 
-    var editButton = $('#edit', newDom);
-    editButton.parent().data('onc', oncEntity);
-    editButton.parent().data('index', i);
-    editButton.click(editCallback);
     // For opaque entities which we do not know how to edit or
     // entities marked for removal already, simply remove the edit
     // button.  User can still preserve such entities and remove them,
     // but not modify them.
-    if (result.hasOpaqueEntity || onc.isMarkedForRemoval(oncEntity)) {
-      editButton[0].parentNode.removeChild(editButton[0]);
+    if (!result.hasOpaqueEntity && !onc.isMarkedForRemoval(oncEntity)) {
+      newDom.click(function(event) {
+        if (!event.srcElement.classList.contains('delete-x'))
+          editCallback.call(this, event);
+      });
     }
-    var removeButton = $('#remove', newDom);
+
+    var removeButton = $('.delete-x', newDom);
     removeButton.click(function() {
       ui.onRemovePress($(this).parent().data('onc'));
     });
-    newDom.hover(
-      function() {
-        $('.action', this).show();
-      },
-      function() {
-        $('.action', this).hide();
-      });
-    newDom[0].style.display = '-webkit-box';
   }
 };
 
@@ -338,26 +323,35 @@ ui.showSummaryList = function(list, id, validator, formatter, editCallback) {
  * Update the summary (right) pane.
  */
 ui.updateSummary = function() {
-  var rightPane = $('#right-pane')[0];
-
-  // Remove all entities other than the template.
-  var entities = $('.entity');
-  for (var i = 0; i < entities.length; ++i) {
-    if (entities[i].style.display != '')
-      entities[i].parentNode.removeChild(entities[i]);
+  // Remove all rows other than the template.
+  var rows = $('.pod :not(.template).item-row');
+  for (var i = 0; i < rows.length; ++i) {
+    rows[i].parentNode.removeChild(rows[i]);
   }
 
   ui.showSummaryList(main.oncCurrent.NetworkConfigurations,
-                     '#network-configurations',
+                     'WiFi',
+                     '#wifi-pod',
                      onc.validateNetwork,
-                     ui.formatNetwork,
-                     ui.onNetworkEditPress);
+                     ui.formatNetworkName,
+                     ui.formatNetworkDescription,
+                     ui.getOnEntityEditPress('wifi'));
+
+  ui.showSummaryList(main.oncCurrent.NetworkConfigurations,
+                     'VPN',
+                     '#vpn-pod',
+                     onc.validateNetwork,
+                     ui.formatNetworkName,
+                     ui.formatNetworkDescription,
+                     ui.getOnEntityEditPress('vpn'));
 
   ui.showSummaryList(main.oncCurrent.Certificates,
-                     '#certificates',
+                     null,
+                     '#cert-pod',
                      onc.validateCertificate,
-                     ui.formatCertificate,
-                     ui.onCertificateEditPress);
+                     ui.formatCertificateName,
+                     ui.formatCertificateDescription,
+                     ui.getOnEntityEditPress('cert'));
 };
 
 /**

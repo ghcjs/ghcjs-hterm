@@ -37,10 +37,10 @@ removeDialog.init = function() {
   var shortDescription;
   if (oncEntityInfo.entityList == 'Certificates') {
     replacementI18n = chrome.i18n.getMessage('certificate');
-    shortDescription = ui.formatCertificate(entity, 1);
+    shortDescription = ui.formatCertificateName(entity);
   } else {
     replacementI18n = chrome.i18n.getMessage('network');
-    shortDescription = ui.formatNetwork(entity, 1);
+    shortDescription = ui.formatNetworkName(entity);
   }
   if (isExternalEntity && !onc.isMarkedForRemoval(entity)) {
     $('#remove-content').hide();
