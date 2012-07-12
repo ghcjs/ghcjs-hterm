@@ -13,7 +13,8 @@
     "tabs"
   ],
   "icons": {
-    "16": "favicon.ico"
+    "16": "icon16.png",
+    "128": "icon128.png"
   },
   "file_browser_handlers": [
     {
