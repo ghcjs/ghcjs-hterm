@@ -16,6 +16,7 @@
     "16": "icon16.png",
     "128": "icon128.png"
   },
+  "content_security_policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; connect-src filesystem:",
   "file_browser_handlers": [
     {
       "id": "view-code",
