@@ -422,7 +422,7 @@ hterm.Terminal.prototype.setProfile = function(profileName) {
     ['page-keys-scroll', false, function(v) {
         self.keyboard.pageKeysScroll = v;
       }
-    ],
+    ]
 
    ]);
 
@@ -1099,7 +1099,7 @@ hterm.Terminal.prototype.decorate = function(div) {
 
   var onMouse = this.onMouse_.bind(this);
   this.scrollPort_.onScrollWheel = onMouse;
-  ['mousedown', 'mouseup', 'mousemove', 'click', 'dblclick',
+  ['mousedown', 'mouseup', 'mousemove', 'click', 'dblclick'
    ].forEach(function(event) {
        this.scrollBlockerNode_.addEventListener(event, onMouse);
        this.cursorNode_.addEventListener(event, onMouse);

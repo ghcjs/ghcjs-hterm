@@ -300,12 +300,12 @@ hterm.Keyboard.prototype.onKeyDown_ = function(e) {
 
   if (action === STRIP) {
     alt = control = false;
-    action = keyDef.normal;
+    action = keyDef['normal'];
     if (typeof action == 'function')
       action = action.apply(this.keyMap, [e, keyDef]);
 
-    if (action == DEFAULT && keyDef.keyCap.length == 2)
-      action = keyDef.keyCap.substr((e.shiftKey ? 1 : 0), 1);
+    if (action == DEFAULT && keyDef['keyCap'].length == 2)
+      action = keyDef['keyCap'].substr((e.shiftKey ? 1 : 0), 1);
   }
 
   e.preventDefault();
@@ -324,17 +324,17 @@ hterm.Keyboard.prototype.onKeyDown_ = function(e) {
 
     if (action === DEFAULT) {
       if (control) {
-        var unshifted = keyDef.keyCap.substr(0, 1);
+        var unshifted = keyDef['keyCap'].substr(0, 1);
         var code = unshifted.charCodeAt(0);
         if (code >= 64 && code <= 95) {
         action = String.fromCharCode(code - 64);
         }
       } else if (alt && this.altSendsWhat == '8-bit') {
-        var ch = keyDef.keyCap.substr((e.shiftKey ? 1 : 0), 1);
+        var ch = keyDef['keyCap'].substr((e.shiftKey ? 1 : 0), 1);
         var code = ch.charCodeAt(0) + 128;
         action = this.terminal.vt.encodeUTF8(String.fromCharCode(code));
       } else {
-        action = keyDef.keyCap.substr((e.shiftKey ? 1 : 0), 1);
+        action = keyDef['keyCap'].substr((e.shiftKey ? 1 : 0), 1);
       }
     }
 

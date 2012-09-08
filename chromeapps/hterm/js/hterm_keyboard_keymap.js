@@ -34,6 +34,13 @@ hterm.Keyboard.KeyMap = function(keyboard) {
 };
 
 /**
+ * Inherit from hterm.Keyboard.KeyMap, as defined in keyboard.js.
+ */
+hterm.Keyboard.KeyMap.prototype = {
+  __proto__: hterm.Keyboard.KeyMap.prototype
+};
+
+/**
  * Add a single key definition.
  *
  * The definition is a hash containing the following keys: 'keyCap', 'normal',
@@ -88,21 +95,14 @@ hterm.Keyboard.KeyMap.prototype.addKeyDef = function(keyCode, def) {
  */
 hterm.Keyboard.KeyMap.prototype.addKeyDefs = function(var_args) {
   for (var i = 0; i < arguments.length; i++) {
-    this.addKeyDef(arguments[i][0],
-                   { keyCap: arguments[i][1],
-                     normal: arguments[i][2],
-                     control: arguments[i][3],
-                     alt: arguments[i][4],
-                     meta: arguments[i][5]
-                   });
+    var entry = {};
+    entry['keyCap' ] = arguments[i][1];
+    entry['normal' ] = arguments[i][2];
+    entry['control'] = arguments[i][3];
+    entry['alt'    ] = arguments[i][4];
+    entry['meta'   ] = arguments[i][5];
+    this.addKeyDef(arguments[i][0],entry);
   }
-};
-
-/**
- * Inherit from hterm.Keyboard.KeyMap, as defined in keyboard.js.
- */
-hterm.Keyboard.KeyMap.prototype = {
-  __proto__: hterm.Keyboard.KeyMap.prototype
 };
 
 /**
@@ -460,7 +460,7 @@ hterm.Keyboard.KeyMap.prototype.onMetaC_ = function(e, keyDef) {
     // If the shift key is being held, or there is no document selection, send
     // a Meta-C.  The keyboard code will add the ESC if metaSendsEscape is true,
     // we just have to decide between 'c' and 'C'.
-    return keyDef.keyCap.substr(e.shiftKey ? 1 : 0, 1);
+    return keyDef['keyCap'].substr(e.shiftKey ? 1 : 0, 1);
   }
 
   // Otherwise let the browser handle it as a copy command.
@@ -485,7 +485,7 @@ hterm.Keyboard.KeyMap.prototype.onZoom_ = function(e, keyDef) {
     return hterm.Keyboard.KeyActions.PASS;
   }
 
-  var cap = keyDef.keyCap.substr(0, 1);
+  var cap = keyDef['keyCap'].substr(0, 1);
   if (cap == '0') {
       this.keyboard.terminal.setFontSize(0);
   } else {
