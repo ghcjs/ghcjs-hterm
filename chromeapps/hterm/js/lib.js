@@ -38,6 +38,7 @@ lib.runtimeDependencies_ = {};
  * @param {string} var_args One or more objects specified as strings.
  */
 lib.rtdep = function(var_args) {
+/*
   var source = lib.getStack()[1];
 
   for (var i = 0; i < arguments.length; i++) {
@@ -47,6 +48,7 @@ lib.rtdep = function(var_args) {
       ary = this.runtimeDependencies_[path] = [];
     ary.push(source);
   }
+*/
 };
 
 /**

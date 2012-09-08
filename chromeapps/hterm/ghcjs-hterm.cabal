@@ -1,0 +1,43 @@
+name:                ghcjs-hterm
+version:             0.1.0.0
+synopsis:            
+homepage:            https://github.com/ghcjs/ghcjs-htem
+license:             BSD3
+maintainer:          Hamish.K.Mackenzie@gmail.com
+category:            Web
+build-type:          Custom
+cabal-version:       >=1.10
+data-dir:            .
+data-files:          
+  js/hterm_frame.js
+  js/hterm.js
+  js/hterm_keyboard.js
+  js/hterm_keyboard_keymap.js
+  js/hterm_mock_row_provider.js
+  js/hterm_options.js
+  js/hterm_pubsub.js
+  js/hterm_pubsub_tests.js
+  js/hterm_screen.js
+  js/hterm_screen_tests.js
+  js/hterm_scrollport.js
+  js/hterm_scrollport_tests.js
+  js/hterm_terminal_io.js
+  js/hterm_terminal.js
+  js/hterm_terminal_tests.js
+  js/hterm_text_attributes.js
+  js/hterm_vt_canned_tests.js
+  js/hterm_vt_character_map.js
+  js/hterm_vt.js
+  js/hterm_vt_tests.js
+  js/lib_colors.js
+  js/lib_f.js
+  js/lib_fs.js
+  js/lib.js
+  js/lib_message_manager.js
+  js/lib_preference_manager.js
+  js/lib_test_manager.js
+  js/lib_utf8.js
+
+library
+  exposed-modules: Paths_ghcjs_hterm
+  build-depends:   base ==4.5.*
