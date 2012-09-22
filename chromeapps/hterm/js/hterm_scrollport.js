@@ -238,7 +238,7 @@ hterm.ScrollPort.Selection.prototype.sync = function() {
 /**
  * Turn a div into this hterm.ScrollPort.
  */
-hterm.ScrollPort.prototype.decorate = function(div) {
+hterm.ScrollPort.prototype.decorate = function(div, next) {
   this.div_ = div;
 
   this.iframe_ = div.ownerDocument.createElement('iframe');
@@ -250,10 +250,13 @@ hterm.ScrollPort.prototype.decorate = function(div) {
 
   div.appendChild(this.iframe_);
 
-  this.iframe_.contentWindow.addEventListener('resize',
-                                              this.onResize_.bind(this));
+  var this_ = this;
+  window.setTimeout(function(){
 
-  var doc = this.document_ = this.iframe_.contentDocument;
+  this_.iframe_.contentWindow.addEventListener('resize',
+                                              this_.onResize_.bind(this_));
+
+  var doc = this_.document_ = this_.iframe_.contentDocument;
   doc.body.style.cssText = (
       'margin: 0px;' +
       'padding: 0px;' +
@@ -266,16 +269,16 @@ hterm.ScrollPort.prototype.decorate = function(div) {
   style.textContent = 'x-row {}';
   doc.head.appendChild(style);
 
-  this.xrowCssRule_ = doc.styleSheets[0].cssRules[0];
-  this.xrowCssRule_.style.display = 'block';
+  this_.xrowCssRule_ = doc.styleSheets[0].cssRules[0];
+  this_.xrowCssRule_.style.display = 'block';
 
   // TODO(rginda): Sorry, this 'screen_' isn't the same thing as hterm.Screen
   // from screen.js.  I need to pick a better name for one of them to avoid
   // the collision.
-  this.screen_ = doc.createElement('x-screen');
-  this.screen_.setAttribute('role', 'textbox');
-  this.screen_.setAttribute('tabindex', '-1');
-  this.screen_.style.cssText = (
+  this_.screen_ = doc.createElement('x-screen');
+  this_.screen_.setAttribute('role', 'textbox');
+  this_.screen_.setAttribute('tabindex', '-1');
+  this_.screen_.style.cssText = (
       'display: block;' +
       'font-family: monospace;' +
       'font-size: 15px;' +
@@ -285,49 +288,49 @@ hterm.ScrollPort.prototype.decorate = function(div) {
       'width: 100%;' +
       'outline: none !important');
 
-  doc.body.appendChild(this.screen_);
+  doc.body.appendChild(this_.screen_);
 
-  this.screen_.addEventListener('scroll', this.onScroll_.bind(this));
-  this.screen_.addEventListener('mousewheel', this.onScrollWheel_.bind(this));
-  this.screen_.addEventListener('copy', this.onCopy_.bind(this));
-  this.screen_.addEventListener('paste', this.onPaste_.bind(this));
+  this_.screen_.addEventListener('scroll', this_.onScroll_.bind(this_));
+  this_.screen_.addEventListener('mousewheel', this_.onScrollWheel_.bind(this_));
+  this_.screen_.addEventListener('copy', this_.onCopy_.bind(this_));
+  this_.screen_.addEventListener('paste', this_.onPaste_.bind(this_));
 
   // We send focus to this element just before a paste happens, so we can
   // capture the pasted text and forward it on to someone who cares.
-  this.pasteTarget_ = doc.createElement('textarea');
-  this.pasteTarget_.setAttribute('tabindex', '-1');
-  this.pasteTarget_.style.cssText = (
+  this_.pasteTarget_ = doc.createElement('textarea');
+  this_.pasteTarget_.setAttribute('tabindex', '-1');
+  this_.pasteTarget_.style.cssText = (
     'position: absolute;' +
     'top: -999px;');
 
-  doc.body.appendChild(this.pasteTarget_);
+  doc.body.appendChild(this_.pasteTarget_);
 
   // This is the main container for the fixed rows.
-  this.rowNodes_ = doc.createElement('div');
-  this.rowNodes_.style.cssText = (
+  this_.rowNodes_ = doc.createElement('div');
+  this_.rowNodes_.style.cssText = (
       'display: block;' +
       'position: fixed;' +
       'overflow: hidden;');
-  this.screen_.appendChild(this.rowNodes_);
+  this_.screen_.appendChild(this_.rowNodes_);
 
   // Two nodes to hold offscreen text during the copy event.
-  this.topSelectBag_ = doc.createElement('x-select-bag');
-  this.topSelectBag_.style.cssText = (
+  this_.topSelectBag_ = doc.createElement('x-select-bag');
+  this_.topSelectBag_.style.cssText = (
       'display: block;' +
       'overflow: hidden;' +
       'white-space: pre;');
 
-  this.bottomSelectBag_ = this.topSelectBag_.cloneNode();
+  this_.bottomSelectBag_ = this_.topSelectBag_.cloneNode();
 
   // Nodes above the top fold and below the bottom fold are hidden.  They are
   // only used to hold rows that are part of the selection but are currently
   // scrolled off the top or bottom of the visible range.
-  this.topFold_ = doc.createElement('x-fold');
-  this.topFold_.style.cssText = 'display: block;';
-  this.rowNodes_.appendChild(this.topFold_);
+  this_.topFold_ = doc.createElement('x-fold');
+  this_.topFold_.style.cssText = 'display: block;';
+  this_.rowNodes_.appendChild(this_.topFold_);
 
-  this.bottomFold_ = this.topFold_.cloneNode();
-  this.rowNodes_.appendChild(this.bottomFold_);
+  this_.bottomFold_ = this_.topFold_.cloneNode();
+  this_.rowNodes_.appendChild(this_.bottomFold_);
 
   // This hidden div accounts for the vertical space that would be consumed by
   // all the rows in the buffer if they were visible.  It's what causes the
@@ -338,12 +341,14 @@ hterm.ScrollPort.prototype.decorate = function(div) {
   // it in the selection when a user 'drag selects' upwards (drag the mouse to
   // select and scroll at the same time).  Without this, the selection gets
   // out of whack.
-  this.scrollArea_ = doc.createElement('div');
-  this.scrollArea_.style.cssText = 'visibility: hidden';
-  this.screen_.appendChild(this.scrollArea_);
+  this_.scrollArea_ = doc.createElement('div');
+  this_.scrollArea_.style.cssText = 'visibility: hidden';
+  this_.screen_.appendChild(this_.scrollArea_);
 
-  this.setSelectionEnabled(true);
-  this.resize();
+  this_.setSelectionEnabled(true);
+  this_.resize();
+  next();
+  }, 0);
 };
 
 /**

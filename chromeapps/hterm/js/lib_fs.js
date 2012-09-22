@@ -67,9 +67,9 @@ lib.fs.err = function(msg, opt_callback) {
  * This toString() implementation fixes that.
  */
 lib.fs.installFileErrorToString = function() {
-  FileError.prototype.toString = function() {
+/*  FileError.prototype.toString = function() {
     return '[object FileError: ' + lib.fs.getFileErrorMnemonic(this.code) + ']';
-  }
+  }*/
 };
 
 /**

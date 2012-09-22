@@ -1032,38 +1032,39 @@ hterm.Terminal.prototype.interpret = function(str) {
  *
  * @param {HTMLDivElement} div The div to use as the terminal display.
  */
-hterm.Terminal.prototype.decorate = function(div) {
+hterm.Terminal.prototype.decorate = function(div, next) {
   this.div_ = div;
 
-  this.scrollPort_.decorate(div);
-  this.scrollPort_.setBackgroundImage(this.prefs_.get('background-image'));
-  this.scrollPort_.setBackgroundSize(this.prefs_.get('background-size'));
-  this.scrollPort_.setBackgroundPosition(
-      this.prefs_.get('background-position'));
+  var this_ = this;
+  this_.scrollPort_.decorate(div, function() {
+  this_.scrollPort_.setBackgroundImage(this_.prefs_.get('background-image'));
+  this_.scrollPort_.setBackgroundSize(this_.prefs_.get('background-size'));
+  this_.scrollPort_.setBackgroundPosition(
+      this_.prefs_.get('background-position'));
 
-  this.div_.focus = this.focus.bind(this);
+  this_.div_.focus = this_.focus.bind(this_);
 
-  this.setFontSize(this.prefs_.get('font-size'));
-  this.syncFontFamily();
+  this_.setFontSize(this_.prefs_.get('font-size'));
+  this_.syncFontFamily();
 
-  this.setScrollbarVisible(this.prefs_.get('scrollbar-visible'));
+  this_.setScrollbarVisible(this_.prefs_.get('scrollbar-visible'));
 
-  this.document_ = this.scrollPort_.getDocument();
+  this_.document_ = this_.scrollPort_.getDocument();
 
-  this.document_.body.oncontextmenu = function() { return false };
+  this_.document_.body.oncontextmenu = function() { return false };
 
-  var onMouse = this.onMouse_.bind(this);
-  this.document_.body.firstChild.addEventListener('mousedown', onMouse);
-  this.document_.body.firstChild.addEventListener('mouseup', onMouse);
-  this.document_.body.firstChild.addEventListener('mousemove', onMouse);
-  this.scrollPort_.onScrollWheel = onMouse;
+  var onMouse = this_.onMouse_.bind(this_);
+  this_.document_.body.firstChild.addEventListener('mousedown', onMouse);
+  this_.document_.body.firstChild.addEventListener('mouseup', onMouse);
+  this_.document_.body.firstChild.addEventListener('mousemove', onMouse);
+  this_.scrollPort_.onScrollWheel = onMouse;
 
-  this.document_.body.firstChild.addEventListener(
-      'focus', this.onFocusChange_.bind(this, true));
-  this.document_.body.firstChild.addEventListener(
-      'blur', this.onFocusChange_.bind(this, false));
+  this_.document_.body.firstChild.addEventListener(
+      'focus', this_.onFocusChange_.bind(this_, true));
+  this_.document_.body.firstChild.addEventListener(
+      'blur', this_.onFocusChange_.bind(this_, false));
 
-  var style = this.document_.createElement('style');
+  var style = this_.document_.createElement('style');
   style.textContent =
       ('.cursor-node[focus="false"] {' +
        '  box-sizing: border-box;' +
@@ -1071,20 +1072,20 @@ hterm.Terminal.prototype.decorate = function(div) {
        '  border-width: 2px;' +
        '  border-style: solid;' +
        '}');
-  this.document_.head.appendChild(style);
+  this_.document_.head.appendChild(style);
 
-  this.cursorNode_ = this.document_.createElement('div');
-  this.cursorNode_.className = 'cursor-node';
-  this.cursorNode_.style.cssText =
+  this_.cursorNode_ = this_.document_.createElement('div');
+  this_.cursorNode_.className = 'cursor-node';
+  this_.cursorNode_.style.cssText =
       ('position: absolute;' +
        'top: -99px;' +
        'display: block;' +
-       'width: ' + this.scrollPort_.characterSize.width + 'px;' +
-       'height: ' + this.scrollPort_.characterSize.height + 'px;' +
+       'width: ' + this_.scrollPort_.characterSize.width + 'px;' +
+       'height: ' + this_.scrollPort_.characterSize.height + 'px;' +
        '-webkit-transition: opacity, background-color 100ms linear;');
-  this.setCursorColor(this.prefs_.get('cursor-color'));
+  this_.setCursorColor(this_.prefs_.get('cursor-color'));
 
-  this.document_.body.appendChild(this.cursorNode_);
+  this_.document_.body.appendChild(this_.cursorNode_);
 
   // When 'enableMouseDragScroll' is off we reposition this element directly
   // under the mouse cursor after a click.  This makes Chrome associate
@@ -1093,33 +1094,35 @@ hterm.Terminal.prototype.decorate = function(div) {
   // events do not cause the scrollport to scroll.
   //
   // It's a hack, but it's the cleanest way I could find.
-  this.scrollBlockerNode_ = this.document_.createElement('div');
-  this.scrollBlockerNode_.style.cssText =
+  this_.scrollBlockerNode_ = this_.document_.createElement('div');
+  this_.scrollBlockerNode_.style.cssText =
       ('position: absolute;' +
        'top: -99px;' +
        'display: block;' +
        'width: 10px;' +
        'height: 10px;');
-  this.document_.body.appendChild(this.scrollBlockerNode_);
+  this_.document_.body.appendChild(this_.scrollBlockerNode_);
 
-  var onMouse = this.onMouse_.bind(this);
-  this.scrollPort_.onScrollWheel = onMouse;
+  var onMouse = this_.onMouse_.bind(this_);
+  this_.scrollPort_.onScrollWheel = onMouse;
   ['mousedown', 'mouseup', 'mousemove', 'click', 'dblclick'
    ].forEach(function(event) {
-       this.scrollBlockerNode_.addEventListener(event, onMouse);
-       this.cursorNode_.addEventListener(event, onMouse);
-       this.document_.addEventListener(event, onMouse);
-     }.bind(this));
+       this_.scrollBlockerNode_.addEventListener(event, onMouse);
+       this_.cursorNode_.addEventListener(event, onMouse);
+       this_.document_.addEventListener(event, onMouse);
+     }.bind(this_));
 
-  this.cursorNode_.addEventListener('mousedown', function() {
-      setTimeout(this.focus.bind(this));
-    }.bind(this));
+  this_.cursorNode_.addEventListener('mousedown', function() {
+      setTimeout(this_.focus.bind(this_));
+    }.bind(this_));
 
-  this.setCursorBlink(!!this.prefs_.get('cursor-blink'));
-  this.setReverseVideo(false);
+  this_.setCursorBlink(!!this_.prefs_.get('cursor-blink'));
+  this_.setReverseVideo(false);
 
-  this.scrollPort_.focus();
-  this.scrollPort_.scheduleRedraw();
+  this_.scrollPort_.focus();
+  this_.scrollPort_.scheduleRedraw();
+  next();
+  });
 };
 
 /**
