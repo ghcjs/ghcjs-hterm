@@ -1,0 +1,3 @@
+Powerwash pågår ...
+
+Powerwash er noe som skjer når kritiske feil oppstår eller du velger å tilbakestille enheten din. Dette tilbakestiller Chrome OS til fabrikkstandard, og operativsystemet er oppe og går igjen om få øyeblikk.

@@ -1,0 +1,3 @@
+Återställningen pågår ...
+
+Återställningar sker när allvarliga fel upptäcks eller när du återställer enheten. Chrome OS återställs nu, och du kan använda enheten igen om en liten stund.

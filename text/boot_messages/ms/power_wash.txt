@@ -1,0 +1,3 @@
+Hapus bersih sedang dijalankan...
+
+Hapus bersih berlaku apabila ralat genting dikesan atau apabila anda memilih untuk menetapkan semula peranti anda. Tindakan ini akan menetapkan semula Chrome OS menjadi seperti baharu dan anda boleh kembali menggunakan peranti dalam seketika.

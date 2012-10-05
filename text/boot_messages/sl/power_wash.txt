@@ -1,0 +1,3 @@
+Poteka čiščenje ...
+
+Do čiščenja pride, ko so zaznane resne napake ali ko izberete ponastavitev naprave. Chrome OS bo s tem ponastavljen, da bo kot nov, in kmalu boste lahko spet začeli delati.

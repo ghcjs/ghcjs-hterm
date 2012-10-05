@@ -1,0 +1,3 @@
+Vyksta visiško atkūrimo procesas...
+
+Visiško atkūrimo procesas pradedamas, kai aptinkama kritinių klaidų arba kai pasirenkate atkurti savo įrenginį. Taip „Chrome“ OS bus atkurta, kad būtų kaip nauja, ir jūs iškart galėsite ją naudoti.

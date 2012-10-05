@@ -1,0 +1,3 @@
+Poništavanje u tijeku...
+
+Poništavanje se aktivira kada se otkriju kritične pogreške ili kada vratite uređaj na izvorne postavke. OS Chrome bit će kao nov, a vi ćete opet moći raditi za koji trenutak.
