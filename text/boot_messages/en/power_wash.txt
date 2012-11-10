@@ -1,0 +1,3 @@
+Powerwash in progress...
+
+Powerwashes happen when critical errors are detected, or when you choose to reset your device. This will reset Chrome OS to be just like new, and you'll be back in operation in just a minute.

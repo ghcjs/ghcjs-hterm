@@ -1,0 +1,3 @@
+Neteja en curs...
+
+Les neteges es duen a terme quan es detecten errors crítics o quan trieu restablir el dispositiu. Aquest procés restablirà Chrome OS com si fos nou i podreu tornar a fer-lo servir d'aquí a un minut.

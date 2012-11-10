@@ -1,0 +1,3 @@
+Tehotyhjennys käynnissä...
+
+Tehotyhjennys suoritetaan, kun havaitaan kriittisiä virheitä tai jos haluat nollata laitteesi. Chrome-käyttöjärjestelmä palautetaan uuden veroiseksi, ja voit jatkaa käyttöä hetken kuluttua.

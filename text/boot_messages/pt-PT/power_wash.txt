@@ -1,0 +1,3 @@
+Limpeza avançada em curso...
+
+Uma limpeza avançada ocorre quando são detetados erros críticos ou quando o utilizador opta por repor o seu dispositivo. Esta ação repõe o Chrome OS como novo e pode retomar a utilização dentro de um minuto.

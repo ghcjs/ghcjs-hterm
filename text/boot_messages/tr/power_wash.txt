@@ -1,0 +1,3 @@
+Tam sıfırlama yapılıyor...
+
+Tam sıfırlama işlemi kritik düzeyde hatalar keşfedildiğinde veya cihazınızı sıfırlamayı seçtiğinizde gerçekleştirilir. Bu işlem, Chrome OS'yi sıfırlayarak ilk haline döndürür ve birkaç dakika içinde tekrar çalışmaya başlayabilirsiniz.

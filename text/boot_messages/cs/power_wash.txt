@@ -1,0 +1,3 @@
+Probíhá vyčištění...
+
+K vyčištění dojde, když systém objeví kritické chyby nebo když zařízení resetujete. Po vyčištění bude systém Chrome OS zase jako nový. Za chvíli budete moci pokračovat v práci.

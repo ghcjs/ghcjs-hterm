@@ -55,6 +55,20 @@ hterm.ScrollPort = function(rowProvider) {
   this.lastScreenWidth_ = null;
   this.lastScreenHeight_ = null;
 
+  // True if the user should be allowed to select text in the terminal.
+  // This is disabled when the host requests mouse drag events so that we don't
+  // end up with two notions of selection.
+  this.selectionEnabled_ = true;
+
+  // The last row count returned by the row provider, re-populated during
+  // syncScrollHeight().
+  this.lastRowCount_ = 0;
+
+  /**
+   * True if the last scroll caused the scrollport to show the final row.
+   */
+  this.isScrolledEnd = true;
+
   // The css rule that we use to control the height of a row.
   this.xrowCssRule_ = null;
 
@@ -290,10 +304,11 @@ hterm.ScrollPort.prototype.decorate = function(div, next) {
 
   doc.body.appendChild(this_.screen_);
 
-  this_.screen_.addEventListener('scroll', this_.onScroll_.bind(this_));
-  this_.screen_.addEventListener('mousewheel', this_.onScrollWheel_.bind(this_));
-  this_.screen_.addEventListener('copy', this_.onCopy_.bind(this_));
-  this_.screen_.addEventListener('paste', this_.onPaste_.bind(this_));
+  this.screen_.addEventListener('scroll', this_.onScroll_.bind(this_));
+  this.screen_.addEventListener('mousewheel', this_.onScrollWheel_.bind(this_));
+  this.screen_.addEventListener('copy', this_.onCopy_.bind(this_));
+  this.screen_.addEventListener('paste', this_.onPaste_.bind(this_));
+  this.screen_.addEventListener('mousedown', this_.onMouseDown_.bind(this_));
 
   // We send focus to this element just before a paste happens, so we can
   // capture the pasted text and forward it on to someone who cares.
@@ -310,8 +325,9 @@ hterm.ScrollPort.prototype.decorate = function(div, next) {
   this_.rowNodes_.style.cssText = (
       'display: block;' +
       'position: fixed;' +
-      'overflow: hidden;');
-  this_.screen_.appendChild(this_.rowNodes_);
+      'overflow: hidden;' +
+      '-webkit-user-select: text;');
+  this.screen_.appendChild(this_.rowNodes_);
 
   // Two nodes to hold offscreen text during the copy event.
   this_.topSelectBag_ = doc.createElement('x-select-bag');
@@ -355,7 +371,7 @@ hterm.ScrollPort.prototype.decorate = function(div, next) {
  * Enable or disable mouse based text selection in the scrollport.
  */
 hterm.ScrollPort.prototype.setSelectionEnabled = function(state) {
-  this.rowNodes_.style.webkitUserSelect = state ? 'text' : 'none';
+  this.selectionEnabled_ = state;
 };
 
 /**
@@ -628,8 +644,9 @@ hterm.ScrollPort.prototype.syncRowNodesDimensions_ = function() {
 
 hterm.ScrollPort.prototype.syncScrollHeight = function() {
   // Resize the scroll area to appear as though it contains every row.
+  this.lastRowCount_ = this.rowProvider_.getRowCount();
   this.scrollArea_.style.height = (this.characterSize.height *
-                                   this.rowProvider_.getRowCount() +
+                                   this.lastRowCount_ +
                                    this.visibleRowTopMargin +
                                    this.visibleRowBottomMargin +
                                    'px');
@@ -1007,6 +1024,9 @@ hterm.ScrollPort.prototype.getScrollMax_ = function(e) {
 hterm.ScrollPort.prototype.scrollRowToTop = function(rowIndex) {
   this.syncScrollHeight();
 
+  this.isScrolledEnd = (
+    rowIndex + this.visibleRowCount >= this.lastRowCount_);
+
   var scrollTop = rowIndex * this.characterSize.height +
       this.visibleRowTopMargin;
 
@@ -1028,6 +1048,9 @@ hterm.ScrollPort.prototype.scrollRowToTop = function(rowIndex) {
  */
 hterm.ScrollPort.prototype.scrollRowToBottom = function(rowIndex) {
   this.syncScrollHeight();
+
+  this.isScrolledEnd = (
+    rowIndex + this.visibleRowCount >= this.lastRowCount_);
 
   var scrollTop = rowIndex * this.characterSize.height +
       this.visibleRowTopMargin + this.visibleRowBottomMargin;
@@ -1213,6 +1236,15 @@ hterm.ScrollPort.prototype.onPaste_ = function(e) {
       self.pasteTarget_.value = '';
       self.screen_.focus();
     }, 0);
+};
+
+/**
+ * Handle mouse down events on the ScrollPort's screen element.
+ */
+hterm.ScrollPort.prototype.onMouseDown_ = function(e) {
+  if (e.which == 1 && !this.selectionEnabled_) {
+    e.preventDefault();
+  }
 };
 
 /**

@@ -1,0 +1,3 @@
+Đang làm sạch ổ cứng...
+
+Quá trình làm sạch ổ cứng diễn ra khi phát hiện thấy lỗi nghiêm trọng hoặc khi bạn chọn đặt lại thiết bị của mình. Làm sạch ổ cứng sẽ đặt lại Chrome OS về trạng thái như mới và bạn sẽ trở lại hoạt động chỉ sau vài phút.

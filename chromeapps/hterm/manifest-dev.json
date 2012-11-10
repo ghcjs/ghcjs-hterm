@@ -4,7 +4,7 @@
   "manifest_version": 2,
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "name": "Secure Shell (dev)",
-  "version": "0.8.7.1",
+  "version": "0.8.8.5",
   "default_locale": "en",
   "icons": {
     "128": "images/vt-128.png",
@@ -14,10 +14,12 @@
   },
   "description": "Terminal emulator and SSH client.",
   "offline_enabled": true,
+  "options_page": "html/hterm_preferences_editor.html",
   "permissions": [
     "clipboardRead",
     "clipboardWrite",
     "unlimitedStorage",
+    "storage",
     "terminalPrivate"
   ],
   "web_accessible_resources": [

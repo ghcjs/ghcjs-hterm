@@ -1,3 +1,81 @@
+0.8.8.5, 2012-10-25, Options page, baud rate, c/p cleanup
+
+* Initial add of an options page, thanks to Mike Frysinger.
+* Tweak the nacl plugin to set a default baud rate for the tty.
+* It turns out webkit stops sending "paste" events if you have a child with
+  -webkit-user-select: none.  This patch works around the issue by calling
+  preventDefault() from the mousedown event, instead of using
+  -webkit-user-select.
+* eraseToRight: If the current background color is default, then delete instead
+  of inserting spaces.  This trims the trailing whitespace in the most common
+  case.
+* Replace new-lines with carriage-returns on paste, since it's the right thing
+  to do.
+* Add osc52.vim and osc52.sh scripts to help users with clipboard integration.
+
+BUG=chromium-os:35643, Incorrect tty baud rate
+
+0.8.8.4, 2012-10-15, Reland 0.8.8.1 changes
+
+* Broke 0.8.8.1 changes into smaller CLs for easier review.  This commit marks
+  the re-integration of the changes.
+* Re-order includes in nassh_connect_dialog.html
+* Make hterm.init call back on a timeout.
+* Removed lib.f.alarm for now.  This function was released as part of 0.8.8.1
+  but I'm holding off on landing it until later.
+
+0.8.8.3, 2012-10-15, Include pnacl binary.
+
+* Actually include the pnacl binary in the package.
+
+0.8.8.2, 2012-10-14, Use pnacl on Chrome >= 23.
+
+* Add a pnacl version of the plugin which we load only in Chrome >= 23.
+
+0.8.8.1, 2012-10-14, Chrome stable vs storage.sync fix.
+
+* Fix nassh.PreferenceManager to degrade to window.localStorage if
+  chrome.storage.sync is not available.
+* Add lib.f.alarm.
+* Fix scroll-on-output preference.
+
+0.8.8.0, 2012-10-08, Synchronized preferences.
+
+* Add lib.Storage.Local and lib.Storage.Chrome classes to normalize the API
+  between window.localStorage and chrome.storage.
+* Generalize nassh.PreferenceManager profile management code into
+  lib.PreferenceManager so that other code can easily define child preferences.
+* Add preference to override the default color palette.
+
+0.8.7.5, 2012-10-2, Text selection fix.
+
+* Fix mouse-based text selection when the selection involves styled text.
+
+0.8.7.4, 2012-09-26, Insert lines fix.
+
+* Fix hterm.Terminal.insertLines to move the correct rows.  This fixes the
+  Reverse Index (RI) sequence (and probably others) that depended on it.
+
+0.8.7.3, 2012-09-25, Styled holes
+
+* Backfill holes created by Erase Characters (ECH) and Delete Characters (DCH)
+  with spaces in the current text style.
+* Fix minor issue with Character Attributes (SGR) with colors 100-107.  These
+  were setting the foreground color instead of the background.
+
+BUG=chromium-os:30258, Text attributes not rendered for whitespace at the end
+    of a line
+
+0.8.7.2, 2012-09-24, Fix regressions, disable pnacl
+
+* Recompile nacl plugin without pnacl to avoid crashes on Mac and extreme
+  slowness elsewhere.
+* Fix keyboard regression that prevented multi-accelerator sequences
+  (ctrl-alt-foo, etc) from working.
+* Stop bolding colors >= 16.
+
+BUG=chromium-os:34306, hterm shows wrong colors for bold colors 16 through 249
+
 0.8.7.1, 2012-09-20, Some keyboard fixes and pnacl
 
 * Recompile nacl plugin with --pnacl enabled.

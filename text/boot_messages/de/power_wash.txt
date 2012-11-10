@@ -1,0 +1,3 @@
+Powerwash läuft...
+
+Powerwashes werden gestartet, wenn kritische Fehler erkannt werden oder Sie Ihr Gerät zurücksetzen. Chrome OS ist nach dieser Bereinigung wie neu und Sie können innerhalb kürzester Zeit weiterarbeiten.

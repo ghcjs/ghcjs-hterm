@@ -1,0 +1,3 @@
+Trwają generalne porządki...
+
+Generalne porządki są przeprowadzane po wykryciu błędów krytycznych lub gdy zechcesz zresetować urządzenie. System operacyjny Chrome zostanie zresetowany (będzie jak nowy) i za minutę wszystko będzie znów działać.
