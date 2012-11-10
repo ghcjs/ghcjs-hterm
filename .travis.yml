@@ -5,3 +5,9 @@ install:
     - cabal-meta install --force-reinstalls
 
 script: mega-sdist --test
+
+notifications:
+  irc:
+    channels: "irc.freenode.net#ghcjs"
+  email: true
+
