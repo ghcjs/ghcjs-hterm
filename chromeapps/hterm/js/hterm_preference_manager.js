@@ -218,7 +218,7 @@ hterm.PreferenceManager = function(profileId) {
      * page up/down will send the VT keycodes.  If false then page up/down
      * sends VT codes and shift page up/down scrolls.
      */
-    ['page-keys-scroll', false],
+    ['page-keys-scroll', false]
    ]);
 };
 

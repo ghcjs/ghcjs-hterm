@@ -263,7 +263,7 @@ hterm.PreferencesEditor.prototype.syncPage = function() {
     'boolean': 'checkbox',
     'number': 'number',
     'object': 'text',
-    'string': 'text',
+    'string': 'text'
   };
   for (var key in this.prefs_.prefRecords_) {
     var input = document.createElement('input');

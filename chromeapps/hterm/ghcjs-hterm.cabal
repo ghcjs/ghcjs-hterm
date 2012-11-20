@@ -15,6 +15,8 @@ data-files:
   js/hterm_keyboard_keymap.js
   js/hterm_mock_row_provider.js
   js/hterm_options.js
+  js/hterm_preference_manager.js
+  js/hterm_preferences_editor.js
   js/hterm_pubsub.js
   js/hterm_pubsub_tests.js
   js/hterm_screen.js
@@ -35,6 +37,9 @@ data-files:
   js/lib.js
   js/lib_message_manager.js
   js/lib_preference_manager.js
+  js/lib_storage.js
+  js/lib_storage_chrome.js
+  js/lib_storage_local.js
   js/lib_test_manager.js
   js/lib_utf8.js
 

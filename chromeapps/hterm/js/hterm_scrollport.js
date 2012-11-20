@@ -304,11 +304,11 @@ hterm.ScrollPort.prototype.decorate = function(div, next) {
 
   doc.body.appendChild(this_.screen_);
 
-  this.screen_.addEventListener('scroll', this_.onScroll_.bind(this_));
-  this.screen_.addEventListener('mousewheel', this_.onScrollWheel_.bind(this_));
-  this.screen_.addEventListener('copy', this_.onCopy_.bind(this_));
-  this.screen_.addEventListener('paste', this_.onPaste_.bind(this_));
-  this.screen_.addEventListener('mousedown', this_.onMouseDown_.bind(this_));
+  this_.screen_.addEventListener('scroll', this_.onScroll_.bind(this_));
+  this_.screen_.addEventListener('mousewheel', this_.onScrollWheel_.bind(this_));
+  this_.screen_.addEventListener('copy', this_.onCopy_.bind(this_));
+  this_.screen_.addEventListener('paste', this_.onPaste_.bind(this_));
+  this_.screen_.addEventListener('mousedown', this_.onMouseDown_.bind(this_));
 
   // We send focus to this element just before a paste happens, so we can
   // capture the pasted text and forward it on to someone who cares.
@@ -327,7 +327,7 @@ hterm.ScrollPort.prototype.decorate = function(div, next) {
       'position: fixed;' +
       'overflow: hidden;' +
       '-webkit-user-select: text;');
-  this.screen_.appendChild(this_.rowNodes_);
+  this_.screen_.appendChild(this_.rowNodes_);
 
   // Two nodes to hold offscreen text during the copy event.
   this_.topSelectBag_ = doc.createElement('x-select-bag');
