@@ -98,7 +98,11 @@ TtsController.prototype.escapePluginArg = function(str) {
 
 TtsController.prototype.onStop = function() {
   console.log('Handling stop');
-  this.pendingSpeechRequest = null;
+  if (!this.initialized) {
+    this.pendingSpeechRequest = null;
+    return;
+  }
+
   delete this.callbackMap[this.utteranceId];
   this.clearTimeouts();
   this.nativeTts.postMessage('stop');
@@ -107,7 +111,7 @@ TtsController.prototype.onStop = function() {
 TtsController.prototype.onSpeak = function(utterance, options, callback) {
   console.log('Will speak: "' + utterance + '"');
 
-  if (this.nativeTts && !this.initialized) {
+  if (!this.initialized) {
     console.log('Pending');
     this.pendingSpeechRequest = [utterance, options, callback];
     return;
