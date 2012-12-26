@@ -1,0 +1,26 @@
+{
+  "name": "Chrome OS text-to-speech component extension",
+  "version": "1.0.0",
+  "description": "Chrome OS native text-to-speech implemented using native client.",
+  "manifest_version": 2,
+  "background": {
+    "scripts": [
+      "voice_data_hmm_en-US.js",
+      "tts_main.js"
+    ]
+  },
+  "permissions": [
+    "ttsEngine",
+    "unlimitedStorage"
+  ],
+  "tts_engine": {
+    "voices": [
+      {
+        "voice_name": "Chrome OS US English Voice",
+        "lang": "en-US",
+        "gender": "female",
+        "event_types": [ "start", "word", "end", "error" ]
+      }
+    ]
+  }
+}

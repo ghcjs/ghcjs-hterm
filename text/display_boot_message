@@ -116,33 +116,57 @@ show_spinner() {
   done &
 }
 
-main() {
+# Shows an arbitrary text file.
+show_file() {
+  local file_type="$1"
+  local locale="$2"
+  local text_file="$3"
+
+  # File extension (.png) is required for render engine (pango-view) to decide
+  # output format.
+  TEMP_FILE="$(mktemp --tmpdir -u).png"
+  message_to_png "$text_file" "$TEMP_FILE" "$locale" \
+    "$ASSETS_IMAGE_PATH/boot_message.png"
+  ply-image --clear 0x"$IMAGE_BACKGROUND_RGB" \
+    "$ASSETS_IMAGE_PATH/boot_message.png"
+  ply-image "$TEMP_FILE" || rc=$?
+  need_spinner "$file_type" && show_spinner "$TEMP_FILE" || true
+  return $rc
+}
+
+# Shows a predefined and localized message from $MESSAGE_BASE_PATH.
+show_message() {
   local message="$1"
-  local locale_list="$2"
+  local locales="$2"
+  local rc=0
   local locale text_file
 
+  for locale in $locales; do
+    text_file="$MESSAGE_BASE_PATH/$locale/$message.txt"
+    [ -f "$text_file" ] || continue
+    show_file "$message" "$locale" "$text_file" || rc=$?
+    return $rc
+  done
+  # If none of given locales have this message, return as failure.
+  return 1
+}
+
+main() {
+  local option text_file locale
+
   if [ "$#" != "2" ]; then
-    echo "Usage: $0 message locales" >&2
+    echo "Usage: $0 [MESSAGE LOCALES | show_file FILE]" >&2
     exit 1
   fi
 
-  for locale in $locale_list; do
-    text_file="$MESSAGE_BASE_PATH/$locale/$message.txt"
-    [ -f "$text_file" ] || continue
-    local rc="0"
-
-    # File extension (.png) is required for render engine (pango-view) to decide
-    # output format.
-    TEMP_FILE="$(mktemp --tmpdir -u).png"
-    message_to_png "$text_file" "$TEMP_FILE" "$locale" \
-                   "$ASSETS_IMAGE_PATH/boot_message.png"
-    ply-image --clear 0x"$IMAGE_BACKGROUND_RGB" \
-              "$ASSETS_IMAGE_PATH/boot_message.png"
-    ply-image "$TEMP_FILE" || rc="$?"
-    need_spinner "$message" && show_spinner "$TEMP_FILE" || true
-    return "$rc"
-  done
-  return 1
+  case "$1" in
+    show_file )
+      show_file "$1" "en" "$2"
+      ;;
+    * )
+      show_message "$1" "$2"
+      ;;
+  esac
 }
 
 set -e

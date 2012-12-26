@@ -1,0 +1,7 @@
+{
+  "program": {
+    "x86-64": {"url": "tts_service_x86-64.nexe"},
+    "x86-32": {"url": "tts_service_x86-32.nexe"},
+    "arm": {"url": "tts_service_pexe_arm.nexe"}
+  }
+}
