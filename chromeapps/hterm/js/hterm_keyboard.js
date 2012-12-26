@@ -15,6 +15,8 @@ lib.rtdep('hterm.Keyboard.KeyMap');
  * See also: [XTERM] as referenced in vt.js.
  *
  * @param {hterm.Terminal} The Terminal object associated with this keyboard.
+ *
+ * @constructor
  */
 hterm.Keyboard = function(terminal) {
   // The parent vt interpreter.

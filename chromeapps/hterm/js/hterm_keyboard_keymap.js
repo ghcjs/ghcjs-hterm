@@ -26,6 +26,8 @@ lib.rtdep('hterm.Keyboard.KeyActions');
  *
  * The sequences defined in this key map come from [XTERM] as referenced in
  * vt.js, starting with the section titled "Alt and Meta Keys".
+ *
+ * @constructor
  */
 hterm.Keyboard.KeyMap = function(keyboard) {
   this.keyboard = keyboard;

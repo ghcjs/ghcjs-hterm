@@ -22,6 +22,8 @@ lib.rtdep('lib.f');
  * @param terminal {hterm.Terminal} The parent terminal object.
  * @param url {String} The url to load in the frame.
  * @param opt_options {Object} Optional options for the frame.  Not implemented.
+ *
+ * @constructor
  */
 hterm.Frame = function(terminal, url, opt_options) {
   this.terminal_ = terminal;

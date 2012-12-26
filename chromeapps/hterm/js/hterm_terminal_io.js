@@ -7,6 +7,8 @@
 lib.rtdep('lib.encodeUTF8');
 
 /**
+ * @constructor
+ *
  * Input/Output interface used by commands to communicate with the terminal.
  *
  * Commands like `nassh` and `crosh` receive an instance of this class as

@@ -11,6 +11,8 @@ lib.rtdep('lib.f');
  *
  * @param {object} The GL mapping from input characters to output characters.
  *     The GR mapping will be automatically created.
+ *
+ * @constructor
  */
 hterm.VT.CharacterMap = function(name, glmap) {
   /**

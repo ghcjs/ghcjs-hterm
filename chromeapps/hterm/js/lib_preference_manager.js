@@ -21,6 +21,8 @@
  *     names.  The '/' character should be used to separate levels of heirarchy,
  *     if you're going to have that kind of thing.  If provided, the prefix
  *     should start with a '/'.  If not provided, it defaults to '/'.
+ *
+ * @constructor
  */
 lib.PreferenceManager = function(storage, opt_prefix) {
   this.storage_ = storage;
@@ -55,6 +57,8 @@ lib.PreferenceManager.prototype.DEFAULT_VALUE = new String('DEFAULT');
  *
  * These objects are managed by the PreferenceManager, you shoudn't need to
  * handle them directly.
+ *
+ * @constructor
  */
 lib.PreferenceManager.Record = function(name, defaultValue) {
   this.name = name;

@@ -7,6 +7,8 @@
 /**
  * Utility class used to add publish/subscribe/unsubscribe functionality to
  * an existing object.
+ *
+ * @constructor
  */
 hterm.PubSub = function() {
   this.observers_ = {};

@@ -10,6 +10,9 @@ lib.rtdep('lib.f', 'lib.Storage');
  * PreferenceManager subclass managing global NaSSH preferences.
  *
  * This is currently just an ordered list of known connection profiles.
+ *
+ * @constructor
+ * @extends {lib.PreferenceManager}
  */
 hterm.PreferenceManager = function(profileId) {
   lib.PreferenceManager.call(this, hterm.defaultStorage,
@@ -222,6 +225,4 @@ hterm.PreferenceManager = function(profileId) {
    ]);
 };
 
-hterm.PreferenceManager.prototype = {
-  __proto__: lib.PreferenceManager.prototype
-};
+goog.inherits(hterm.PreferenceManager, lib.PreferenceManager);

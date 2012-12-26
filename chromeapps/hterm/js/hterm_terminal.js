@@ -28,6 +28,8 @@ lib.rtdep('lib.colors', 'lib.PreferenceManager',
  *
  * @param {string} opt_profileId Optional preference profile name.  If not
  *     provided, defaults to 'default'.
+ *
+ * @constructor
  */
 hterm.Terminal = function(opt_profileId) {
   this.profileId_ = null;

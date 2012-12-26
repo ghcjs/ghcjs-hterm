@@ -36,6 +36,8 @@ lib.rtdep('lib.colors', 'lib.f', 'lib.UTF8Decoder',
  *   man 5 terminfo, man infocmp, infocmp -L xterm-new
  *
  * @param {hterm.Terminal} terminal Terminal to use with the interpreter.
+ *
+ * @constructor
  */
 hterm.VT = function(terminal) {
   /**
@@ -298,6 +300,9 @@ hterm.VT.ParseState.prototype.isComplete = function() {
   return this.buf == null || this.buf.length <= this.pos;
 };
 
+/**
+ * @constructor
+ */
 hterm.VT.CursorState = function(vt) {
   this.vt_ = vt;
   this.save();

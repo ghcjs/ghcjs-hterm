@@ -17,6 +17,8 @@
  * @param {Array} languages List of languages to load, in the order they
  *     should be loaded.  Newer messages replace older ones.  'en' is
  *     automatically added as the first language if it is not already present.
+ *
+ * @constructor
  */
 lib.MessageManager = function(languages) {
   this.languages_ = languages.map(

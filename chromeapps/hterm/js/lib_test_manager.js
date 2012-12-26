@@ -28,6 +28,8 @@
  *
  * @param {lib.TestManager.Log} opt_log Optional lib.TestManager.Log object.
  *     Logs to the JavaScript console if ommitted.
+ *
+ * @constructor
  */
 lib.TestManager = function(opt_log) {
   this.log = opt_log || new lib.TestManager.Log();

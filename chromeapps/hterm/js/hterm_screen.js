@@ -46,6 +46,8 @@ lib.rtdep('lib.f',
  *    screen.  See insertString() and overwriteString() for information about
  *    what happens when too many characters are added too a row.  Defaults to
  *    0 if not provided.
+ *
+ * @constructor
  */
 hterm.Screen = function(opt_columnCount) {
   /**

@@ -4,6 +4,9 @@
 
 'use strict';
 
+/**
+ * @constructor
+ */
 function MockRowProvider(document, count) {
   this.document_ = document;
   this.rows_ = new Array();

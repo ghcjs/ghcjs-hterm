@@ -20,7 +20,7 @@ var hterm = {};
  *     initialization is complete.
  */
 hterm.init = function(opt_onInit) {
-  if (chrome.storage && chrome.storage.sync) {
+  if (window.chrome != undefined && chrome.storage && chrome.storage.sync) {
     hterm.defaultStorage = new lib.Storage.Chrome(chrome.storage.sync);
   } else {
     hterm.defaultStorage = new lib.Storage.Local();
@@ -73,6 +73,8 @@ hterm.pasteFromClipboard = function(document) {
  *
  * @param {integer} width The width of this record.
  * @param {integer} height The height of this record.
+ *
+ * @constructor
  */
 hterm.Size = function(width, height) {
   this.width = width;
@@ -147,6 +149,8 @@ hterm.Size.prototype.toString = function() {
  * @param {integer} column The column of this record.
  * @param {boolean} opt_overflow Optional boolean indicating that the RowCol
  *     has overflowed.
+ *
+ * @constructor
  */
 hterm.RowCol = function(row, column, opt_overflow) {
   this.row = row;
